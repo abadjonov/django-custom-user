@@ -55,3 +55,20 @@ class RegisterView(APIView):
             )
 
             return Response({'message': 'email ga kod ketti.'})
+
+
+class VerifyView(APIView):
+    def post(self, reqeust: Request) -> Response:
+        data = reqeust.data
+
+        email = data['email']
+        otp = data['otp']
+
+        user = User.objects.get(email=email)
+        if user.otp.otp == otp:
+            user.is_verified = True
+            user.save()
+
+            return Response({'message': 'tasdiqlandi'})
+
+        return Response({'message': 'error'})
