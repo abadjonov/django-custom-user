@@ -66,7 +66,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,3 +132,22 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+
+# The backend backend to use for sending emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# SMTP provider host and port (e.g., smtp.gmail.com)
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+
+# Use TLS (True for port 587) or SSL (True for port 465)
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+# Authentication credentials
+EMAIL_HOST_USER = 'djumanovdev@gmail.com'
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+
+# Default from email address used in your app
+DEFAULT_FROM_EMAIL = 'djumanovdev@gmail.com'

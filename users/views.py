@@ -1,4 +1,7 @@
 from django.contrib.auth.models import make_password
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 from rest_framework.views import APIView
 from rest_framework.request import Request
@@ -29,5 +32,26 @@ class RegisterView(APIView):
 
             uvc = UserVerificationCode(user=user, otp=otp)
             uvc.save()
+
+            context = {
+                'app_name': 'Django Custom User',
+                'otp_code': otp,
+                'year': 2026
+            }
+
+            html_message = render_to_string('otp.html', context)
+            plain_message = strip_tags(html_message)
+            subject = 'Tasdiqlash'
+            from_email = 'djumanovdev@gmail.com'
+            to_list = [user.email]
+
+            send_mail(
+                subject,
+                plain_message,
+                from_email,
+                to_list,
+                html_message=html_message, # HTML tarkib shu yerga uzatiladi
+                fail_silently=False,
+            )
 
             return Response({'message': 'email ga kod ketti.'})
